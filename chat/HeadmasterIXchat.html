@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Mijn AI Chat</title>
+    <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('Adamai.gif');
+      background-size: cover;         /* vult het hele scherm */
+      background-repeat: no-repeat;   /* geen herhaling */
+      background-position: center;    /* gecentreerd */
+      height: 100vh;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <style>
+    #chat { max-width: 600px; margin: auto; border: 1px solid #444; padding: 1em; background: #222; border-radius: 8px; }
+    .message { margin: 1em 0; }
+    .user { color: #0f0; }
+    .ai { color: #0cf; }
+    input, button { padding: 0.5em; font-size: 1em; }
+    #inputArea { display: flex; gap: 0.5em; margin-top: 1em; }
+    input { flex: 1; background: #333; color: #eee; border: 1px solid #555; border-radius: 4px; }
+    button { background: #0cf; color: #000; border: none; border-radius: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <div id="messages"></div>
+    <div id="inputArea">
+      <input type="text" id="userInput" placeholder="Typ hier je vraag...">
+      <button onclick="sendMessage()">Verzend</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage('user', text);
+      input.value = '';
+
+      try {
+        const response = await fetch('http://localhost:5000/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await response.json();
+        addMessage('ai', data.reply || 'Geen antwoord ontvangen.');
+      } catch (err) {
+        addMessage('ai', 'Er ging iets mis met de API...');
+        console.error(err);
+      }
+    }
+
+    function addMessage(sender, text) {
+      const messages = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = `message ${sender}`;
+      div.textContent = (sender === 'user' ? '🧑‍💻 Jij: ' : '🤖 AI: ') + text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+</body>
+</html>
