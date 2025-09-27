@@ -39,37 +39,37 @@
     </div>
   </div>
 
-  <script>
-    async function sendMessage() {
-      const input = document.getElementById('userInput');
-      const text = input.value.trim();
-      if (!text) return;
+<script>
+  async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text) return;
 
-      addMessage('user', text);
-      input.value = '';
+    addMessage('user', text);
+    input.value = '';
 
-      try {
-        const response = await fetch('http://localhost:1234/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text })
-        });
-        const data = await response.json();
-        addMessage('ai', data.reply || 'Geen antwoord ontvangen.');
-      } catch (err) {
-        addMessage('ai', 'Er ging iets mis met de API...');
-        console.error(err);
-      }
+    try {
+      const response = await fetch('/ask-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+      const data = await response.json();
+      addMessage('ai', data.reply || 'Geen antwoord ontvangen.');
+    } catch (err) {
+      addMessage('ai', 'Er ging iets mis met de brugserver...');
+      console.error(err);
     }
+  }
 
-    function addMessage(sender, text) {
-      const messages = document.getElementById('messages');
-      const div = document.createElement('div');
-      div.className = `message ${sender}`;
-      div.textContent = (sender === 'user' ? '🧑‍💻 Jij: ' : '🤖 AI: ') + text;
-      messages.appendChild(div);
-      messages.scrollTop = messages.scrollHeight;
-    }
-  </script>
+  function addMessage(sender, text) {
+    const messages = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = `message ${sender}`;
+    div.textContent = (sender === 'user' ? '🧑‍💻 Jij: ' : '🤖 AI: ') + text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+</script>
 </body>
 </html>

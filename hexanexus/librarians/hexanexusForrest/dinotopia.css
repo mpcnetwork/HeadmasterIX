@@ -11,6 +11,7 @@ body {
     background-size: cover; /* Veranderd van 'cover' naar 'contain' */
     background-attachment: fixed;
     background-color: black; /* Optioneel: een kleur achter de afbeelding */
+    
   }
   
   .container {
