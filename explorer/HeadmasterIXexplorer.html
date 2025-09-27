@@ -1,0 +1,43 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+   <title><Hexanexus-home>Hexanexus-home</Hexanexus-home></title>
+  <style>
+    body { font-family: sans-serif; background: #f0f0f0; padding: 2em; }
+    ul { list-style: none; padding: 0; }
+    li { background: white; margin: 0.5em 0; padding: 1em; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>📁 MPCNVerkenner</h1>
+  <ul id="fileList">
+    <li><h2>📁 Mpcnetwork-home</h2></li>
+    <li><h2>📁 Mpcnetworkuniversity-home</h2></li>
+      <h3>📁 Javascript</h3>
+      <h3>📁 Databanken</h3>
+      <h3>📁 Repository</h3>
+      <h3>📁 projects</h3>
+    <li><h2>📁 Hexanexus-home</h2></li>
+      <h3>📁 Librarians</h3>
+      <h3>📁 Chat</h3>
+      <h3>📁 Explorer</h3>
+      <h3>📁 Projects</h3>
+    <li><h2>📁 Mini-Verkenner</h2></li>
+  </ul>
+
+  <script>
+    fetch('/files')
+      .then(res => res.json())
+      .then(files => {
+        const list = document.getElementById('fileList');
+        files.forEach(file => {
+          const li = document.createElement('li');
+          li.textContent = file;
+          list.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>
