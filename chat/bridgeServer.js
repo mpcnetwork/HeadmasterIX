@@ -18,7 +18,7 @@ app.post('/ask-ai', async (req, res) => {
     const userInput = req.body.message;
 
     // Stuur het bericht door naar je lokale AI-server
-    const aiResponse = await axios.post('http://192.168.56.1:1234/v1/chat/completions', {
+    const aiResponse = await axios.post('http://192.168.56.1:1234', {
       prompt: userInput
     });
 
